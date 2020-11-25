@@ -4365,13 +4365,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7faafa9ebce98bc41a9721bfd5dba048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PLATFORM_URL: https://kovan.cloud.enjin.io/
-  DEVELOPER_USERNAME: 
-  DEVELOPER_IDENTITY_ID: 0
-  APP_ID: 0
-  ACCESS_TOKEN: 
-  APP_SECRET: 
-  PLAYER_EMAIL: 
+  platformUrl: https://kovan.cloud.enjin.io
+  projectId: 0
+  projectSecret: 
+  playerName: 
 --- !u!4 &1798212642
 Transform:
   m_ObjectHideFlags: 0
