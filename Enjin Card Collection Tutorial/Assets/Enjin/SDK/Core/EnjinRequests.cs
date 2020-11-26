@@ -127,7 +127,7 @@ namespace Enjin.SDK.Core
             string offeringStr = TokenValueInputData.ToGraphQL(itemsFromSender);
 
             _query =
-                @"mutation sendTrade{result:CreateEnjinRequest(appId:$appId^,ethAddress:$senderAddress^,type:CREATE_TRADE,create_trade_data:{asking_tokens:$askingTokens^,offering_tokens:$offeringTokens^";
+                @"mutation sendTrade{result:CreateEnjinRequest(appId:$appId^,ethAddress:""$senderAddress^$$,type:CREATE_TRADE,create_trade_data:{asking_tokens:$askingTokens^,offering_tokens:$offeringTokens^";
             _query += @",second_party_address:""$secondPartyAddress^""";
             GraphQuery.variable["secondPartyAddress"] = secondPartyAddress;
 
@@ -212,7 +212,7 @@ namespace Enjin.SDK.Core
         {
             // Build the query.
             _query =
-                @"mutation sendTrade{result:CreateEnjinRequest(appId:$appId^,ethAddress:$senderAddress^,type:COMPLETE_TRADE,complete_trade_data:{trade_id:""$tradeID^""}){id,encodedData,state}}";
+                @"mutation sendTrade{result:CreateEnjinRequest(appId:$appId^,ethAddress:""$senderAddress^$$,type:COMPLETE_TRADE,complete_trade_data:{trade_id:""$tradeID^""}){id,encodedData,state}}";
 
             // Populate the query.
             GraphQuery.variable["appId"] = Enjin.AppID.ToString();
@@ -266,7 +266,7 @@ namespace Enjin.SDK.Core
             System.Action<string> handler, bool async = false)
         {
             _query =
-                @"mutation sendItem{CreateEnjinRequest(appId:$appId^,type:SEND,ethAddress:$senderAddress^,send_token_data:{recipient_identity_id:$recipient_id^, token_id: ""$token_id^"", ";
+                @"mutation sendItem{CreateEnjinRequest(appId:$appId^,type:SEND,ethAddress:""$senderAddress^$$,send_token_data:{recipient_identity_id:$recipient_id^, token_id: ""$token_id^"", ";
             if (item.nonFungible)
             {
                 _query += @"token_index: ""$item_index^"", ";
@@ -340,7 +340,7 @@ namespace Enjin.SDK.Core
             System.Action<string> handler, bool async = false)
         {
             _query =
-                @"mutation sendItem{CreateEnjinRequest(appId:$appId^,type:SEND,ethAddress:$senderAddress^,send_token_data:{recipient_address:$recipientAddress^, token_id: ""$token_id^"", value:$value^}){id,encodedData,state}}";
+                @"mutation sendItem{CreateEnjinRequest(appId:$appId^,type:SEND,ethAddress:""$senderAddress^$$,send_token_data:{recipient_address:$recipientAddress^, token_id: ""$token_id^"", value:$value^}){id,encodedData,state}}";
             GraphQuery.variable["appId"] = Enjin.AppID.ToString();
             GraphQuery.variable["senderAddress"] = senderAddress.ToString();
             GraphQuery.variable["token_id"] = tokenID;
@@ -438,7 +438,7 @@ namespace Enjin.SDK.Core
             System.Action<string> handler, bool async = false)
         {
             _query =
-                @"mutation mintFToken{request:CreateEnjinRequest(appId:$appId^,ethAddress:$senderAddress^,type:MINT,mint_token_data:{token_id:""$itemID^"",recipient_address_array:$addresses^,value:$value^}){id,encodedData,state}}";
+                @"mutation mintFToken{request:CreateEnjinRequest(appId:$appId^,ethAddress:""$senderAddress^"",type:MINT,mint_token_data:{token_id:""$itemID^"",recipient_address_array:$addresses^,value:$value^}){id,encodedData,state}}";
             GraphQuery.variable["appId"] = Enjin.AppID.ToString();
             GraphQuery.variable["senderAddress"] = senderAddress.ToString();
             GraphQuery.variable["addresses"] = EnjinHelpers<string>.ConvertToJSONArrayString(addresses);
@@ -478,7 +478,7 @@ namespace Enjin.SDK.Core
             System.Action<string> handler, bool async = false)
         {
             _query =
-                @"mutation mintNFToken{request:CreateEnjinRequest(appId:$appId^,ethAddress:$senderAddress^,type:MINT,mint_token_data:{token_id:""$itemID^"",recipient_address_array:$addresses^}){id,encodedData,state}}";
+                @"mutation mintNFToken{request:CreateEnjinRequest(appId:$appId^,ethAddress:""$senderAddress^$$,type:MINT,mint_token_data:{token_id:""$itemID^"",recipient_address_array:$addresses^}){id,encodedData,state}}";
             GraphQuery.variable["appId"] = Enjin.AppID.ToString();
             GraphQuery.variable["senderAddress"] = senderAddress.ToString();
             GraphQuery.variable["addresses"] = EnjinHelpers<string>.ConvertToJSONArrayString(addresses);
@@ -518,12 +518,12 @@ namespace Enjin.SDK.Core
             if (index != "")
             {
                 _query =
-                    @"mutation meltToken{request:CreateEnjinRequest(appId:$appId^,type:MELT,ethAddress:$senderAddress^,melt_token_data:{token_id:""$itemid^"",token_index:""$index^"",value:$amount^}){id,encodedData,state}}";
+                    @"mutation meltToken{request:CreateEnjinRequest(appId:$appId^,type:MELT,ethAddress:""$senderAddress^$$,melt_token_data:{token_id:""$itemid^"",token_index:""$index^"",value:$amount^}){id,encodedData,state}}";
                 GraphQuery.variable["index"] = index;
             }
             else
                 _query =
-                    @"mutation meltToken{request:CreateEnjinRequest(appId:$appId^,type:MELT,ethAddress:$senderAddress^,melt_token_data:{token_id:""$itemid^"",value:$amount^}){id,encodedData,state}}";
+                    @"mutation meltToken{request:CreateEnjinRequest(appId:$appId^,type:MELT,ethAddress:""$senderAddress^$$,melt_token_data:{token_id:""$itemid^"",value:$amount^}){id,encodedData,state}}";
 
             GraphQuery.variable["appId"] = Enjin.AppID.ToString();
             GraphQuery.variable["senderAddress"] = senderAddress.ToString();
@@ -581,7 +581,7 @@ namespace Enjin.SDK.Core
             {
                 case CryptoItemFieldType.NAME:
                     _query =
-                        @"mutation updateItemName{request:CreateEnjinRequest(appId:$appId^,ethAddress:$senderAddress^,type:UPDATE_NAME,update_item_name_data:{token_id:""$id^"",name:""$name^""}){id,encodedData,state}}";
+                        @"mutation updateItemName{request:CreateEnjinRequest(appId:$appId^,ethAddress:""$senderAddress^$$,type:UPDATE_NAME,update_item_name_data:{token_id:""$id^"",name:""$name^""}){id,encodedData,state}}";
                     GraphQuery.variable["appId"] = Enjin.AppID.ToString();
                     GraphQuery.variable["id"] = item.id;
                     GraphQuery.variable["senderAddress"] = senderAddress.ToString();
@@ -707,7 +707,7 @@ namespace Enjin.SDK.Core
             if (item.index == null)
             {
                 _query =
-                    @"mutation setItemUri{request:CreateEnjinRequest(appId:$appId^,ethAddress:$senderAddress^,type:SET_ITEM_URI,set_item_uri_data:{token_id:""$itemID^"",item_uri:""$itemData^""}){id,encodedData,state}}";
+                    @"mutation setItemUri{request:CreateEnjinRequest(appId:$appId^,ethAddress:""$senderAddress^$$,type:SET_ITEM_URI,set_item_uri_data:{token_id:""$itemID^"",item_uri:""$itemData^""}){id,encodedData,state}}";
             }
             else
             {
